@@ -1,0 +1,218 @@
+Version 0.1
+
+Descripcion: Primera version de prueba.
+
+Funciones	
+	*flv a mp4
+        *flv a avi
+	*flv a 3gp
+	*mp3 a ac3
+	*mp3 a amr
+
+Soporta:
+	Enabled decoders:
+aac			ffvhuff			pcm_s32le
+aasc			flac			pcm_s8
+ac3			flashsv			pcm_u16be
+adpcm_4xm		flic			pcm_u16le
+adpcm_adx		flv			pcm_u24be
+adpcm_ct		fourxm			pcm_u24le
+adpcm_ea		fraps			pcm_u32be
+adpcm_ea_maxis_xa	gif			pcm_u32le
+adpcm_ea_r1		h261			pcm_u8
+adpcm_ea_r2		h263			pcm_zork
+adpcm_ea_r3		h263i			pcx
+adpcm_ea_xas		h264			png
+adpcm_g726		huffyuv			ptx
+adpcm_ima_amv		idcin			qcelp
+adpcm_ima_dk3		imc			qdm2
+adpcm_ima_dk4		indeo2			qdraw
+adpcm_ima_ea_eacs	indeo3			qpeg
+adpcm_ima_ea_sead	interplay_dpcm		qtrle
+adpcm_ima_iss		interplay_video		ra_144
+adpcm_ima_qt		jpegls			ra_288
+adpcm_ima_smjpeg	kmvc			rawvideo
+adpcm_ima_wav		libamr_nb		rl2
+adpcm_ima_ws		libamr_wb		roq
+adpcm_ms		loco			roq_dpcm
+adpcm_sbpro_2		mace3			rpza
+adpcm_sbpro_3		mace6			rv10
+adpcm_sbpro_4		mdec			rv20
+adpcm_swf		mimic			rv30
+adpcm_thp		mjpeg			rv40
+adpcm_xa		mjpegb			sgi
+adpcm_yamaha		mlp			shorten
+alac			mmvideo			smackaud
+amv			motionpixels		smacker
+ape			mp1			smc
+asv1			mp2			snow
+asv2			mp3			sol_dpcm
+atrac3			mp3adu			sonic
+avs			mp3on4			sp5x
+bethsoftvid		mpc7			sunrast
+bfi			mpc8			svq1
+bmp			mpeg1video		svq3
+c93			mpeg2video		targa
+cavs			mpeg4			theora
+cinepak			mpegvideo		thp
+cljr			msmpeg4v1		tiertexseqvideo
+cook			msmpeg4v2		tiff
+cscd			msmpeg4v3		truemotion1
+cyuv			msrle			truemotion2
+dca			msvideo1		truespeech
+dnxhd			mszh			tscc
+dsicinaudio		nellymoser		tta
+dsicinvideo		nuv			txd
+dvbsub			pcm_alaw		ulti
+dvdsub			pcm_dvd			vb
+dvvideo			pcm_f32be		vc1
+dxa			pcm_f32le		vcr1
+eac3			pcm_f64be		vmdaudio
+eacmv			pcm_f64le		vmdvideo
+eatgq			pcm_mulaw		vmnc
+eatgv			pcm_s16be		vorbis
+eatqi			pcm_s16le		vp3
+eightbps		pcm_s16le_planar	vp5
+eightsvx_exp		pcm_s24be		vp6
+eightsvx_fib		pcm_s24daud		vp6a
+escape124		pcm_s24le		vp6f
+ffv1			pcm_s32be		vqa
+wavpack			wmv3			xl
+wmav1			wnv1			xsub
+wmav2			ws_snd1			zlib
+wmv1			xan_dpcm		zmbv
+wmv2			xan_wc3
+
+Enabled encoders:
+ac3			ljpeg			pcm_u24le
+adpcm_adx		mjpeg			pcm_u32be
+adpcm_g726		mp2			pcm_u32le
+adpcm_ima_qt		mpeg1video		pcm_u8
+adpcm_ima_wav		mpeg2video		pcm_zork
+adpcm_ms		mpeg4			pgm
+adpcm_swf		msmpeg4v1		pgmyuv
+adpcm_yamaha		msmpeg4v2		png
+alac			msmpeg4v3		ppm
+asv1			nellymoser		qtrle
+asv2			pam			rawvideo
+bmp			pbm			roq
+dnxhd			pcm_alaw		roq_dpcm
+dvbsub			pcm_f32be		rv10
+dvdsub			pcm_f32le		rv20
+dvvideo			pcm_f64be		sgi
+ffv1			pcm_f64le		snow
+ffvhuff			pcm_mulaw		sonic
+flac			pcm_s16be		sonic_ls
+flashsv			pcm_s16le		svq1
+flv			pcm_s24be		targa
+gif			pcm_s24daud		tiff
+h261			pcm_s24le		vorbis
+h263			pcm_s32be		wmav1
+h263p			pcm_s32le		wmav2
+huffyuv			pcm_s8			wmv1
+jpegls			pcm_u16be		wmv2
+libamr_nb		pcm_u16le		zlib
+libamr_wb		pcm_u24be		zmbv
+libmp3lame
+
+Enabled parsers:
+aac			dvdsub			mpeg4video
+ac3			h261			mpegaudio
+cavsvideo		h263			mpegvideo
+dca			h264			pnm
+dirac			mjpeg			vc1
+dnxhd			mlp			vp3
+dvbsub
+
+Enabled demuxers:
+aac			ipmovie			pcm_u16be
+ac3			iss			pcm_u16le
+aiff			lmlm4			pcm_u24be
+amr			m4v			pcm_u24le
+apc			matroska		pcm_u32be
+ape			mjpeg			pcm_u32le
+asf			mlp			pcm_u8
+ass			mm			pva
+au			mmf			r3d
+avi			mov			rawvideo
+avs			mp3			redir
+bethsoftvid		mpc			rl2
+bfi			mpc8			rm
+c93			mpegps			roq
+cavsvideo		mpegts			rpl
+daud			mpegtsraw		rtsp
+dirac			mpegvideo		sdp
+dnxhd			msnwc_tcp		segafilm
+dsicin			mtv			shorten
+dts			mvi			siff
+dv			mxf			smacker
+dxa			nc			sol
+ea			nsv			str
+ea_cdata		nut			swf
+eac3			nuv			thp
+ffm			ogg			tiertexseq
+flac			oma			tta
+flic			pcm_alaw		txd
+flv			pcm_f32be		vc1
+fourxm			pcm_f32le		vc1t
+gsm			pcm_f64be		vmd
+gxf			pcm_f64le		voc
+h261			pcm_mulaw		wav
+h263			pcm_s16be		wc3
+h264			pcm_s16le		wsaud
+idcin			pcm_s24be		wsvqa
+iff			pcm_s24le		wv
+image2			pcm_s32be		xa
+image2pipe		pcm_s32le		yuv4mpegpipe
+ingenient		pcm_s8
+
+Enabled muxers:
+ac3			ipod			pcm_f64le
+adts			m4v			pcm_mulaw
+aiff			matroska		pcm_s16be
+amr			matroska_audio		pcm_s16le
+asf			mjpeg			pcm_s24be
+asf_stream		mmf			pcm_s24le
+ass			mov			pcm_s32be
+au			mp2			pcm_s32le
+avi			mp3			pcm_s8
+avm2			mp4			pcm_u16be
+crc			mpeg1system		pcm_u16le
+daud			mpeg1vcd		pcm_u24be
+dirac			mpeg1video		pcm_u24le
+dnxhd			mpeg2dvd		pcm_u32be
+dts			mpeg2svcd		pcm_u32le
+dv			mpeg2video		pcm_u8
+eac3			mpeg2vob		psp
+ffm			mpegts			rawvideo
+flac			mpjpeg			rm
+flv			mxf			roq
+framecrc		mxf_d10			rtp
+gif			null			swf
+gxf			nut			tg2
+h261			ogg			tgp
+h263			pcm_alaw		vc1t
+h264			pcm_f32be		voc
+image2			pcm_f32le		wav
+image2pipe		pcm_f64be		yuv4mpegpipe
+
+Enabled protocols:
+file			pipe			tcp
+gopher			rtp			udp
+http
+
+Enabled filters:
+crop
+
+Enabled bsfs:
+dump_extradata		mov2textsub		noise
+h264_mp4toannexb	mp3_header_compress	remove_extradata
+imx_dump_header		mp3_header_decompress	text2movsub
+mjpega_dump_header
+
+Enabled indevs:
+dv1394			v4l			v4l2
+oss
+
+Enabled outdevs:
+oss

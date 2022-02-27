@@ -1,0 +1,14 @@
+flv to avi
+./ffmpeg -i /mmc/mmca1/test.flv -f avi /mmc/mmca1/salida.avi
+
+mp3 to ac3
+./ffmpeg -i /mmc/mmca1/algo.mp3 -acodec ac3 /mmc/mmca1/salida.ac3 
+
+flv to mp4 
+./ffmpeg -i /mmc/mmca1/test.flv -vcodec mpeg4 -s 320x240 -r 15 -b 296 -acodec ac3 /mmc/mmca1/salida.mp4
+
+mp3 a amr
+./ffmpeg -i /mmc/mmca1/02\ 20\ de\ enero.mp3  -acodec libamr_wb -ar 16000 -ac 1 -ab 15.85k /mmc/mmca1/sali.amr
+
+flv a 3gp
+./ffmpeg -i /mmc/mmca1/test.flv -vcodec h263 -s 176x144 -acodec libamr_wb -ar 16000 -ac 1 -ab 15.85k /mmc/mmca1/sali.3gp

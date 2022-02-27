@@ -1,0 +1,7 @@
+[Desktop Entry]
+BigIcon = icon.png
+Directory = nanoencoder
+Exec = nanoencoder.sh
+AniIcon = icon.png
+Name = Nano Encoder
+Version = 0.1

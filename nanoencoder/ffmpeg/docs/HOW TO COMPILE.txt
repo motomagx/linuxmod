@@ -1,0 +1,342 @@
+Importante: en este proyecto vamos a hacer source de tres software libre, dos de audio y el otro de video
+[url=http://lame.sourceforge.net/]lame mp3[/url] es un codec de compresion y decompresion de mp3, [url=http://www.penguin.cz/~utx/amr]amr[/url] es un codec de audio para poder usar el formato 3gp de video, y a ambos los vamos a necesitar para usar el [url=http://www.ffmpeg.org/]ffmpeg[/url] que es un codec de video.
+
+Cualquier duda o informacion extra que deseen -> www.google.com
+
+
+Desarrollo:
+Ahora voy a explicar para aquellos que les interese la programacion o el proceso de desarrollo los pasos necesarios para poder compilar todo esto, al que no le interesa, vaya al final del post a la parte de Instalacion.
+
+Que hice yo para compilar todo esto:
+
+Compilacion del lame
+
+1) Descargar el source del lame mp3, lo vamos a necesitar para trabajar con audio
+http://sourceforge.net/project/downloading.php?group_id=290&use_mirror=ufpr&filename=lame-398-2.tar.gz&a=61178845
+
+2) Abrimos un terminal en algun linux (yo uso Ubuntu 8.04 ^^)
+Ejecutamos los siguientes comando poniendo como ruta su direccion al arm-eabi, esto es para indicar con que queremos compilar (cross compilar)
+
+export CC=/arm-eabi/bin/arm-linux-gnueabi-gcc
+export CXX=/arm-eabi/bin/arm-linux-gnueabi-g++
+export LD=/arm-eabi/bin/arm-linux-gnueabi-ld
+export AR=/arm-eabi/bin/arm-linux-gnueabi-ar
+export NM=/arm-eabi/bin/arm-linux-gnueabi-nm
+export RANLIB=/arm-eabi/bin/arm-linux-gnueabi-ranlib
+
+3) Bueno ahora hacemos el configure que va a generar el makefile.
+Fijense que en --exec-prefix= y prefix= debemos colocar la ruta donde queremos que se instalen nuestros archivos
+
+./configure --enable-static --disable-shared --with-fileio=lame --host=arm-linux-gnueabi --exec-prefix=/home/cristian/lame --prefix=/home/cristian/lame
+
+4) make
+
+5) sudo make install
+
+Bueno, en este punto deberiamos tener compilado el lame para poder usarlo en la compilacion del ffmpeg
+
+Compilacion de amr:
+
+6) Descargamos el source http://www.penguin.cz/~utx/amr ambos archivos amrnb-7.0.0.2.tar.bz2 y amrwb-7.0.0.3.tar.bz2
+
+7) Descomprimimos y vamos a la carpeta del amrnb, reemplazamos el archivo configure original por este [url=http://www.4shared.com/file/90693735/d9410615/configure.html]CONFIGUREARM[/url] que es una que yo arme para poder compilar para el arm-eabi 
+
+8) Ahora si ejecutamos el configure
+
+prefix y exec-prefix indican los directorios de instalacion
+
+./configure --prefix=/home/cristian/amrn --exec-prefix=/home/cristian/amrn CC=/arm-eabi/bin/arm-linux-gnueabi-gcc AR=/arm-eabi/bin/arm-linux-gnueabi-ar RANLIB=/arm-eabi/bin/arm-linux-gnueabi-ranlib LD=/arm-eabi/bin/arm-linux-gnueabi-ld --host=arm
+
+9) Hacemos lo mismo de los pasos 7 y 8 pero para el amrwb, usamos este [url=http://www.4shared.com/file/90695060/f4784f86/_2__configure.html]CONFIGURE[/url]
+
+./configure --prefix=/home/cristian/amrw --exec-prefix=/home/cristian/amrw CC=/arm-eabi/bin/arm-linux-gnueabi-gcc AR=/arm-eabi/bin/arm-linux-gnueabi-ar RANLIB=/arm-eabi/bin/arm-linux-gnueabi-ranlib LD=/arm-eabi/bin/arm-linux-gnueabi-ld --host=arm
+
+10) make
+
+11) sudo make install
+
+
+Compilacion del ffmpeg
+
+12) Descargamos el source
+
+svn checkout svn://svn.ffmpeg.org/ffmpeg/trunk ffmpeg
+
+(necesitamos tener instalado subversion en el linux)
+
+13) Hacemos el configure
+
+Presten atencion a:
+prefix= que indica el directorio donde se van a copiar los binarios y las librerias
+cc= la ruta a nuestro compilador
+extra-cflags= debe tener la ruta al directorio include donde se instalo el lame el amrn y el amrw
+extra-ldflags= debe tener la ruta al directorio lib donde se instalo el lame el amrn y el amrw
+
+./configure --prefix=/home/cristian/ffmpeg --enable-cross-compile --cc=/arm-eabi/bin/arm-linux-gnueabi-gcc --arch=arm --enable-gpl --enable-nonfree --enable-libmp3lame --enable-libamr-nb --enable-libamr-wb --extra-cflags="-I/home/cristian/lame/include -I/home/cristian/amrn/include -I/home/cristian/amrw/include" --extra-ldflags="-L/home/cristian/lame/lib -L/home/cristian/amrn/lib -L/home/cristian/amrw/lib" --disable-ffplay --disable-ffserver --disable-iwmmxt --disable-stripping
+
+14) Abrir el archivo config.mak que se genero y reemplazar donde dice -O3 por -O2
+Reemplazar donde dice ar= ar por ar= /arm-eabi/bin/arm-linux-gnueabi-ar
+Reemplazar donde dice ranlib = ranlib por ranlib= /arm-eabi/bin/arm-linux-gnueabi-ranlib
+
+15) make
+
+En este punto pueden fumar un puchito (camel para mi gusto), o ir al baño porque esto tarda como 10 minutos dependiendo de su PC
+
+16) sudo make install
+
+
+BIEN!!!!!!!!!!!!!!! listo...
+
+Datos extras:
+Estas son los encoders y decoders soportados
+
+Soporta:
+	Enabled decoders:
+aac			ffvhuff			pcm_s32le
+aasc			flac			pcm_s8
+ac3			flashsv			pcm_u16be
+adpcm_4xm		flic			pcm_u16le
+adpcm_adx		flv			pcm_u24be
+adpcm_ct		fourxm			pcm_u24le
+adpcm_ea		fraps			pcm_u32be
+adpcm_ea_maxis_xa	gif			pcm_u32le
+adpcm_ea_r1		h261			pcm_u8
+adpcm_ea_r2		h263			pcm_zork
+adpcm_ea_r3		h263i			pcx
+adpcm_ea_xas		h264			png
+adpcm_g726		huffyuv			ptx
+adpcm_ima_amv		idcin			qcelp
+adpcm_ima_dk3		imc			qdm2
+adpcm_ima_dk4		indeo2			qdraw
+adpcm_ima_ea_eacs	indeo3			qpeg
+adpcm_ima_ea_sead	interplay_dpcm		qtrle
+adpcm_ima_iss		interplay_video		ra_144
+adpcm_ima_qt		jpegls			ra_288
+adpcm_ima_smjpeg	kmvc			rawvideo
+adpcm_ima_wav		libamr_nb		rl2
+adpcm_ima_ws		libamr_wb		roq
+adpcm_ms		loco			roq_dpcm
+adpcm_sbpro_2		mace3			rpza
+adpcm_sbpro_3		mace6			rv10
+adpcm_sbpro_4		mdec			rv20
+adpcm_swf		mimic			rv30
+adpcm_thp		mjpeg			rv40
+adpcm_xa		mjpegb			sgi
+adpcm_yamaha		mlp			shorten
+alac			mmvideo			smackaud
+amv			motionpixels		smacker
+ape			mp1			smc
+asv1			mp2			snow
+asv2			mp3			sol_dpcm
+atrac3			mp3adu			sonic
+avs			mp3on4			sp5x
+bethsoftvid		mpc7			sunrast
+bfi			mpc8			svq1
+bmp			mpeg1video		svq3
+c93			mpeg2video		targa
+cavs			mpeg4			theora
+cinepak			mpegvideo		thp
+cljr			msmpeg4v1		tiertexseqvideo
+cook			msmpeg4v2		tiff
+cscd			msmpeg4v3		truemotion1
+cyuv			msrle			truemotion2
+dca			msvideo1		truespeech
+dnxhd			mszh			tscc
+dsicinaudio		nellymoser		tta
+dsicinvideo		nuv			txd
+dvbsub			pcm_alaw		ulti
+dvdsub			pcm_dvd			vb
+dvvideo			pcm_f32be		vc1
+dxa			pcm_f32le		vcr1
+eac3			pcm_f64be		vmdaudio
+eacmv			pcm_f64le		vmdvideo
+eatgq			pcm_mulaw		vmnc
+eatgv			pcm_s16be		vorbis
+eatqi			pcm_s16le		vp3
+eightbps		pcm_s16le_planar	vp5
+eightsvx_exp		pcm_s24be		vp6
+eightsvx_fib		pcm_s24daud		vp6a
+escape124		pcm_s24le		vp6f
+ffv1			pcm_s32be		vqa
+wavpack			wmv3			xl
+wmav1			wnv1			xsub
+wmav2			ws_snd1			zlib
+wmv1			xan_dpcm		zmbv
+wmv2			xan_wc3
+
+Enabled encoders:
+ac3			ljpeg			pcm_u24le
+adpcm_adx		mjpeg			pcm_u32be
+adpcm_g726		mp2			pcm_u32le
+adpcm_ima_qt		mpeg1video		pcm_u8
+adpcm_ima_wav		mpeg2video		pcm_zork
+adpcm_ms		mpeg4			pgm
+adpcm_swf		msmpeg4v1		pgmyuv
+adpcm_yamaha		msmpeg4v2		png
+alac			msmpeg4v3		ppm
+asv1			nellymoser		qtrle
+asv2			pam			rawvideo
+bmp			pbm			roq
+dnxhd			pcm_alaw		roq_dpcm
+dvbsub			pcm_f32be		rv10
+dvdsub			pcm_f32le		rv20
+dvvideo			pcm_f64be		sgi
+ffv1			pcm_f64le		snow
+ffvhuff			pcm_mulaw		sonic
+flac			pcm_s16be		sonic_ls
+flashsv			pcm_s16le		svq1
+flv			pcm_s24be		targa
+gif			pcm_s24daud		tiff
+h261			pcm_s24le		vorbis
+h263			pcm_s32be		wmav1
+h263p			pcm_s32le		wmav2
+huffyuv			pcm_s8			wmv1
+jpegls			pcm_u16be		wmv2
+libamr_nb		pcm_u16le		zlib
+libamr_wb		pcm_u24be		zmbv
+libmp3lame
+
+Enabled parsers:
+aac			dvdsub			mpeg4video
+ac3			h261			mpegaudio
+cavsvideo		h263			mpegvideo
+dca			h264			pnm
+dirac			mjpeg			vc1
+dnxhd			mlp			vp3
+dvbsub
+
+Enabled demuxers:
+aac			ipmovie			pcm_u16be
+ac3			iss			pcm_u16le
+aiff			lmlm4			pcm_u24be
+amr			m4v			pcm_u24le
+apc			matroska		pcm_u32be
+ape			mjpeg			pcm_u32le
+asf			mlp			pcm_u8
+ass			mm			pva
+au			mmf			r3d
+avi			mov			rawvideo
+avs			mp3			redir
+bethsoftvid		mpc			rl2
+bfi			mpc8			rm
+c93			mpegps			roq
+cavsvideo		mpegts			rpl
+daud			mpegtsraw		rtsp
+dirac			mpegvideo		sdp
+dnxhd			msnwc_tcp		segafilm
+dsicin			mtv			shorten
+dts			mvi			siff
+dv			mxf			smacker
+dxa			nc			sol
+ea			nsv			str
+ea_cdata		nut			swf
+eac3			nuv			thp
+ffm			ogg			tiertexseq
+flac			oma			tta
+flic			pcm_alaw		txd
+flv			pcm_f32be		vc1
+fourxm			pcm_f32le		vc1t
+gsm			pcm_f64be		vmd
+gxf			pcm_f64le		voc
+h261			pcm_mulaw		wav
+h263			pcm_s16be		wc3
+h264			pcm_s16le		wsaud
+idcin			pcm_s24be		wsvqa
+iff			pcm_s24le		wv
+image2			pcm_s32be		xa
+image2pipe		pcm_s32le		yuv4mpegpipe
+ingenient		pcm_s8
+
+Enabled muxers:
+ac3			ipod			pcm_f64le
+adts			m4v			pcm_mulaw
+aiff			matroska		pcm_s16be
+amr			matroska_audio		pcm_s16le
+asf			mjpeg			pcm_s24be
+asf_stream		mmf			pcm_s24le
+ass			mov			pcm_s32be
+au			mp2			pcm_s32le
+avi			mp3			pcm_s8
+avm2			mp4			pcm_u16be
+crc			mpeg1system		pcm_u16le
+daud			mpeg1vcd		pcm_u24be
+dirac			mpeg1video		pcm_u24le
+dnxhd			mpeg2dvd		pcm_u32be
+dts			mpeg2svcd		pcm_u32le
+dv			mpeg2video		pcm_u8
+eac3			mpeg2vob		psp
+ffm			mpegts			rawvideo
+flac			mpjpeg			rm
+flv			mxf			roq
+framecrc		mxf_d10			rtp
+gif			null			swf
+gxf			nut			tg2
+h261			ogg			tgp
+h263			pcm_alaw		vc1t
+h264			pcm_f32be		voc
+image2			pcm_f32le		wav
+image2pipe		pcm_f64be		yuv4mpegpipe
+
+Enabled protocols:
+file			pipe			tcp
+gopher			rtp			udp
+http
+
+Enabled filters:
+crop
+
+Enabled bsfs:
+dump_extradata		mov2textsub		noise
+h264_mp4toannexb	mp3_header_compress	remove_extradata
+imx_dump_header		mp3_header_decompress	text2movsub
+mjpega_dump_header
+
+Enabled indevs:
+dv1394			v4l			v4l2
+oss
+
+Enabled outdevs:
+oss
+
+INSTALACION:
+
+Requisitos: necesitan la norris de mi amigazo javier porque se necesitan copiar archivos a la carpeta /usr/lib/ y solo se puede hacer en la norris
+
+Bajan el mpkg y lo instalan desde la norris
+
+Uso:
+Bueno como veran tiene 2 pestañas la primera es para video y la otra para audio.
+
+Van a Open seleccionan el archivo a abrir, despues van a Save as y lo guardan, luego van a a Encode y selecionan la codificacion deseada.
+
+**********************************************************************************************************************
+Importante: no piensen que se tilda cuando ponen encode, obviamente va a llevar su tiempo aproximadamente 1 minuto por mega de video por ejemplo, asi que aguanten y esperen a que termine sin tocar nada
+**********************************************************************************************************************
+
+Yo testee la aplicacion para pasar:
+*flv a mp4, 3gp y avi
+*avi a mp4, 
+*mp3 a amr y ac3
+
+Por lo tanto creo que el mejor uso que se le puede dar a la aplicacion es pasar flv a mp4 y verlos con el reporductor stock del cel si no tenemos el Mplayer y pasar mp3 a amr para que ocupe menos espacio
+
+
+[DOWNLOAD]
+
+SCREENSHOTS:
+[IMG]http://i44.tinypic.com/muz6nk.png[/IMG]
+[IMG]http://i39.tinypic.com/esrh1i.png[/IMG]
+[IMG]http://i39.tinypic.com/3wxmh.png[/IMG]
+[IMG]http://i44.tinypic.com/34obtwm.png[/IMG]
+
+
+Dudas, sugerencias para proximas funciones son apreciadas
+
+P/D: pronto el zImageMagick mejorado, ya tiene nuevas funciones y soporte multilenguaje, falta visualizar la imagen desde la aplicacion
+
+
+
+
+
+
+
